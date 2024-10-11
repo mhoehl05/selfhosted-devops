@@ -7,7 +7,7 @@ resource "azurerm_public_ip" "bastion" {
 }
 
 resource "azurerm_bastion_host" "example" {
-  name                = "examplebastion"
+  name                = "bastion-devops-demo-weu"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
 
