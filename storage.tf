@@ -15,7 +15,7 @@ resource "azurerm_storage_container" "state_container" {
 resource "azurerm_storage_account_network_rules" "default" {
   storage_account_id = azurerm_storage_account.state_deposit.id
 
-  default_action             = "Deny"
+  default_action             = "Allow"
   virtual_network_subnet_ids = [azurerm_subnet.agents.id]
   bypass                     = ["AzureServices"]
 }
