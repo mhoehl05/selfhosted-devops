@@ -36,4 +36,6 @@ resource "azurerm_linux_virtual_machine_scale_set" "agents" {
       subnet_id = azurerm_subnet.agents.id
     }
   }
+
+  custom_data = filebase64("custom_data/installations.tpl")
 }
