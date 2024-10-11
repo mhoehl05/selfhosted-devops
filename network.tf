@@ -19,3 +19,11 @@ resource "azurerm_subnet" "agents" {
   address_prefixes     = ["10.0.0.64/27"]
   service_endpoints    = ["Microsoft.Storage"]
 }
+
+resource "azurerm_storage_account_network_rules" "default" {
+  storage_account_id = data.azurerm_storage_account.state_deposit.id
+
+  default_action             = "Deny"
+  virtual_network_subnet_ids = [azurerm_subnet.agents.id]
+  bypass                     = ["AzureServices"]
+}
