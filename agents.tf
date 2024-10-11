@@ -1,7 +1,7 @@
 resource "azurerm_linux_virtual_machine_scale_set" "agents" {
   name                = "vmss-devopsagents-demo-weu"
-  resource_group_name = azurerm_resource_group.main.name
-  location            = azurerm_resource_group.main.location
+  resource_group_name = data.azurerm_resource_group.main.name
+  location            = data.azurerm_resource_group.main.location
   sku                 = "Standard_B2s"
   instances           = 2
   admin_username      = "adm_ubuntu"
