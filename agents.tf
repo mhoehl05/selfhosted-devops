@@ -40,8 +40,6 @@ resource "azurerm_linux_virtual_machine_scale_set" "agents" {
 
 resource "azurerm_virtual_machine_scale_set_extension" "installations" {
   name                         = "DevopsAgent"
-  resource_group_name          = data.azurerm_resource_group.main.name
-  location                     = data.azurerm_resource_group.main.location
   virtual_machine_scale_set_id = azurerm_linux_virtual_machine_scale_set.agents.id
   publisher                    = "Microsoft.Azure.Extensions"
   type                         = "CustomScript"
