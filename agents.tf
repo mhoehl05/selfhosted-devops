@@ -47,7 +47,7 @@ resource "azurerm_virtual_machine_scale_set_extension" "installations" {
 
   settings = <<SETTINGS
     {
-        "script": "${filebase64("custom_scripts/installation.sh")}"
+        "script": "${filebase64("custom_scripts/installations.sh")}"
     }
 SETTINGS
 }
