@@ -1,14 +1,17 @@
 locals {
   agents = [
     {
+      name   = "agent-1"
       cpu    = "0.5"
       memory = "1.5"
     },
     {
+      name   = "agent-2"
       cpu    = "0.5"
       memory = "1.5"
     },
     {
+      name   = "agent-3"
       cpu    = "0.5"
       memory = "1.5"
     }
