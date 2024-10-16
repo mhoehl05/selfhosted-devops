@@ -6,20 +6,24 @@ resource "azurerm_container_group" "agents" {
   os_type             = "Linux"
   subnet_ids          = ["${azurerm_subnet.agents.id}"]
 
-  container {
-    name   = "container-tfcagent-demo-weu"
-    image  = "docker.io/hashicorp/tfc-agent:latest"
-    cpu    = "0.5"
-    memory = "1.5"
+  dynamic "container" {
+    count = 3
 
-    secure_environment_variables = {
-      "TFC_AGENT_TOKEN" = "${var.TFC_AGENT_TOKEN}"
-      "TFC_AGENT_NAME"  = "${var.TFC_AGENT_NAME}"
-    }
+    content {
+      name   = "container-tfcagent-demo-weu-${count.index}"
+      image  = "docker.io/hashicorp/tfc-agent:latest"
+      cpu    = "0.5"
+      memory = "1.5"
 
-    ports {
-      port     = 22
-      protocol = "TCP"
+      secure_environment_variables = {
+        "TFC_AGENT_TOKEN" = "${var.TFC_AGENT_TOKEN}"
+        "TFC_AGENT_NAME"  = "${var.TFC_AGENT_NAME}-${count.index}"
+      }
+
+      ports {
+        port     = 22
+        protocol = "TCP"
+      }
     }
   }
 }
