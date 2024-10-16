@@ -19,7 +19,7 @@ resource "azurerm_container_group" "agents" {
 
     ports {
       port     = 443
-      protocol = "HTTPS"
+      protocol = "TCP"
     }
 
     ports {
