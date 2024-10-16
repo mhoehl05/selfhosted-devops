@@ -28,3 +28,9 @@ variable "TFC_AGENT_NAME" {
   default = ""
 }
 
+variable "agent_count" {
+  type        = number
+  default     = 1
+}
+
+

@@ -1,5 +1,5 @@
 resource "azurerm_container_group" "agent" {
-  count = 3
+  count = var.agent_count
 
   name                = "continst-tfcagent-demo-weu-${count.index + 1}"
   location            = data.azurerm_resource_group.devops_rg.location
