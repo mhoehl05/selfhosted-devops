@@ -17,3 +17,14 @@ variable "tenant_id" {
   type    = string
   default = ""
 }
+
+variable "TFC_AGENT_TOKEN" {
+  type    = string
+  default = ""
+}
+
+variable "TFC_AGENT_NAME" {
+  type    = string
+  default = ""
+}
+
