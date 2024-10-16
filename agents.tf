@@ -28,14 +28,14 @@ resource "azurerm_container_group" "agents" {
     for_each = local.agents
 
     content {
-      name   = "container-tfcagent-demo-weu-${index(local.agent, container.value) + 1}"
+      name   = "container-tfcagent-demo-weu-${index(local.agents, container.value) + 1}"
       image  = "docker.io/hashicorp/tfc-agent:latest"
       cpu    = container.value.cpu
       memory = container.value.memory
 
       secure_environment_variables = {
         "TFC_AGENT_TOKEN" = "${var.TFC_AGENT_TOKEN}"
-        "TFC_AGENT_NAME"  = "${var.TFC_AGENT_NAME}-${each.key}"
+        "TFC_AGENT_NAME"  = "${var.TFC_AGENT_NAME}-${index(local.agents, container.value) + 1}"
       }
 
       ports {
