@@ -1,4 +1,4 @@
-resource "azurerm_container_group" "agents" {
+resource "azurerm_container_group" "agent" {
   count = 3
 
   name                = "continst-tfcagent-demo-weu-${count.index + 1}"
@@ -11,8 +11,8 @@ resource "azurerm_container_group" "agents" {
   container {
     name   = "tfcagent"
     image  = "docker.io/hashicorp/tfc-agent:latest"
-    cpu    = container.value.cpu
-    memory = container.value.memory
+    cpu    = "0.5"
+    memory = "1.5"
 
     secure_environment_variables = {
       "TFC_AGENT_TOKEN" = "${var.TFC_AGENT_TOKEN}"
