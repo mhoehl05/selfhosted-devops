@@ -38,16 +38,15 @@ resource "azurerm_private_dns_zone" "acr_dns" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "dns_vnet_link" {
-  name                  = "dnslink-acr-demo-weu"
+  name                  = "dnslinkacrdemoweu"
   resource_group_name   = data.azurerm_resource_group.devops_rg.name
   private_dns_zone_name = azurerm_private_dns_zone.acr_dns.name
-  virtual_network_id    = var.vnet_id
-}
+  virtual_network_id    = azurerm_virtual_network.devops_vnet.id
 
 resource "azurerm_private_dns_a_record" "pep_dns_record_data" {
   name                = lower(format("%s.%s.data", azurerm_container_registry.agent_acr.name, data.azurerm_resource_group.devops_rg.location))
   zone_name           = azurerm_private_dns_zone.acr_dns.name
-  resource_group_name = var.resource_group_name
+  resource_group_name = data.azurerm_resource_group.devops_rg.name
   ttl                 = 3600
   records             = [data.azurerm_network_interface.acr_nic.private_ip_addresses[0]]
 }
