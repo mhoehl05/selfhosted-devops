@@ -3,15 +3,15 @@ locals {
     1 = {
         cpu ="0.5"
         memory = "1.5"
-    },
+    }
     2 = {
         cpu ="0.5"
         memory = "1.5"
-    },
+    }
     3 = {
         cpu ="0.5"
         memory = "1.5"
-    },
+    }
   }
 }
 
@@ -25,13 +25,13 @@ resource "azurerm_container_group" "agents" {
   subnet_ids          = ["${azurerm_subnet.agents.id}"]
 
   dynamic "container" {
-    for_each = locals.agents
+    for_each = local.agents
 
     content {
       name   = "container-tfcagent-demo-weu-${each.key}"
       image  = "docker.io/hashicorp/tfc-agent:latest"
-      cpu    = "0.5"
-      memory = "1.5"
+      cpu    = each.value.cpu
+      memory = each.value.memory
 
       secure_environment_variables = {
         "TFC_AGENT_TOKEN" = "${var.TFC_AGENT_TOKEN}"
