@@ -11,10 +11,10 @@ resource "azurerm_container_group" "agents" {
     image  = "docker.io/hashicorp/tfc-agent:latest"
     cpu    = "0.5"
     memory = "1.5"
-  }
 
-  secure_environment_variables = {
-    "TFC_AGENT_TOKEN" = "${var.TFC_AGENT_TOKEN}"
-    "TFC_AGENT_NAME"  = "${var.TFC_AGENT_NAME}"
+    secure_environment_variables = {
+      "TFC_AGENT_TOKEN" = "${var.TFC_AGENT_TOKEN}"
+      "TFC_AGENT_NAME"  = "${var.TFC_AGENT_NAME}"
+    }
   }
 }
