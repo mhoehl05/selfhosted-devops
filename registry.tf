@@ -42,6 +42,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "dns_vnet_link" {
   resource_group_name   = data.azurerm_resource_group.devops_rg.name
   private_dns_zone_name = azurerm_private_dns_zone.acr_dns.name
   virtual_network_id    = azurerm_virtual_network.devops_vnet.id
+}
 
 resource "azurerm_private_dns_a_record" "pep_dns_record_data" {
   name                = lower(format("%s.%s.data", azurerm_container_registry.agent_acr.name, data.azurerm_resource_group.devops_rg.location))
