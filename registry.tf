@@ -1,5 +1,5 @@
 resource "azurerm_container_registry" "agent_acr" {
-  name                = "acr-tfcagents-demo-weu"
+  name                = "acrtfcagentsdemoweu"
   resource_group_name = data.azurerm_resource_group.devops_rg.name
   location            = data.azurerm_resource_group.devops_rg.location
   sku                 = "Premium"
@@ -38,7 +38,7 @@ resource "azurerm_private_dns_zone" "acr_dns" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "dns_vnet_link" {
-  name                  = "dnslinkacrdemoweu"
+  name                  = "dnslink-acr-demo-weu"
   resource_group_name   = data.azurerm_resource_group.devops_rg.name
   private_dns_zone_name = azurerm_private_dns_zone.acr_dns.name
   virtual_network_id    = azurerm_virtual_network.devops_vnet.id
