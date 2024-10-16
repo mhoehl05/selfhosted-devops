@@ -1,8 +1,8 @@
 resource "azurerm_container_group" "agents" {
-  name                = "example-continst"
+  name                = "continst-tfcagent-demo-weu"
   location            = data.azurerm_resource_group.devops_rg.location
   resource_group_name = data.azurerm_resource_group.devops_rg.name
-  ip_address_type     = "Private"
+  ip_address_type     = "private"
   os_type             = "Linux"
   subnet_ids          = ["${azurerm_subnet.agents.id}"]
 
