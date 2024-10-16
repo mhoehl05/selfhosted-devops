@@ -20,6 +20,7 @@ resource "azurerm_private_endpoint" "acr_pep" {
     name                           = "pepconn-acr-demo-weu"
     private_connection_resource_id = azurerm_container_registry.agent_acr.id
     is_manual_connection           = false
+    subresource_names              = ["registry"]
   }
 }
 
