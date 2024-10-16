@@ -16,5 +16,15 @@ resource "azurerm_container_group" "agents" {
       "TFC_AGENT_TOKEN" = "${var.TFC_AGENT_TOKEN}"
       "TFC_AGENT_NAME"  = "${var.TFC_AGENT_NAME}"
     }
+
+    ports {
+      port     = 443
+      protocol = "HTTPS"
+    }
+
+    ports {
+      port     = 7146
+      protocol = "TCP"
+    }
   }
 }
