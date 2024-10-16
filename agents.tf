@@ -5,7 +5,7 @@ resource "azurerm_container_group" "agents" {
   ip_address_type     = "Private"
   dns_name_label      = "tfcagent"
   os_type             = "Linux"
-  subnet_ids          = azurerm_subnet.agents.id
+  subnet_ids          = ["${azurerm_subnet.agents.id}"]
 
   container {
     name   = "container-tfcagent-demo-weu"
