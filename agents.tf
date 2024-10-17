@@ -56,6 +56,7 @@ resource "azurerm_container_group" "agent" {
   }
 
   depends_on = [
-    azurerm_container_registry_task_schedule_run_now.pull_tfcagent
+    azurerm_container_registry_task_schedule_run_now.pull_tfcagent,
+    azurerm_role_assignment.pull_access
   ]
 }
