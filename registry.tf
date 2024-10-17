@@ -1,5 +1,5 @@
-resource "azurerm_container_registry" "agent_acr" {
-  name                = "acrtfcagentsdemoweu"
+resource "azurerm_container_registry" "base_acr" {
+  name                = "acrbaseartifactsdemoweu"
   resource_group_name = data.azurerm_resource_group.devops_rg.name
   location            = data.azurerm_resource_group.devops_rg.location
   sku                 = "Premium"
@@ -18,7 +18,7 @@ resource "azurerm_private_endpoint" "acr_pep" {
 
   private_service_connection {
     name                           = "pepconn-acr-demo-weu"
-    private_connection_resource_id = azurerm_container_registry.agent_acr.id
+    private_connection_resource_id = azurerm_container_registry.base_acr.id
     is_manual_connection           = false
     subresource_names              = ["registry"]
   }
@@ -46,7 +46,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "dns_vnet_link" {
 }
 
 resource "azurerm_private_dns_a_record" "pep_dns_record_data" {
-  name                = lower(format("%s.%s.data", azurerm_container_registry.agent_acr.name, data.azurerm_resource_group.devops_rg.location))
+  name                = lower(format("%s.%s.data", azurerm_container_registry.base_acr.name, data.azurerm_resource_group.devops_rg.location))
   zone_name           = azurerm_private_dns_zone.acr_dns.name
   resource_group_name = data.azurerm_resource_group.devops_rg.name
   ttl                 = 3600
@@ -54,7 +54,7 @@ resource "azurerm_private_dns_a_record" "pep_dns_record_data" {
 }
 
 resource "azurerm_private_dns_a_record" "pep_dns_record" {
-  name                = lower(azurerm_container_registry.agent_acr.name)
+  name                = lower(azurerm_container_registry.base_acr.name)
   zone_name           = azurerm_private_dns_zone.acr_dns.name
   resource_group_name = data.azurerm_resource_group.devops_rg.name
   ttl                 = 3600
