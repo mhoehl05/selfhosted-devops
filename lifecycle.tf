@@ -1,5 +1,5 @@
 resource "azurerm_container_registry_agent_pool" "acr_agents" {
-  name                      = "acr-agentpool-demo-weu"
+  name                      = "base-acr-agentpool"
   resource_group_name       = data.azurerm_resource_group.devops_rg.name
   location                  = data.azurerm_resource_group.devops_rg.location
   container_registry_name   = azurerm_container_registry.base_acr.name
