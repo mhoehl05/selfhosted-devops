@@ -15,12 +15,6 @@ resource "azuread_service_principal_password" "tfcagent_sp_password" {
   service_principal_id = azuread_service_principal.tfcagent_sp.id
 }
 
-resource "azurerm_role_assignment" "pull_access" {
-  scope              = azurerm_container_registry.base_acr.id
-  role_definition_id = "AcrPull"
-  principal_id       = azuread_service_principal_password.tfcagent_sp_password.service_principal_id
-}
-
 resource "azurerm_container_group" "agent" {
   count = var.agent_count
 
@@ -56,7 +50,6 @@ resource "azurerm_container_group" "agent" {
   }
 
   depends_on = [
-    azurerm_container_registry_task_schedule_run_now.pull_tfcagent,
-    azurerm_role_assignment.pull_access
+    azurerm_container_registry_task_schedule_run_now.pull_tfcagent
   ]
 }
