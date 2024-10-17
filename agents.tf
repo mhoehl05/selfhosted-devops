@@ -31,6 +31,11 @@ resource "azurerm_container_app" "agents" {
   resource_group_name          = data.azurerm_resource_group.devops_rg.name
   revision_mode                = "Single"
 
+  identity {
+    type         = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.tfcagent_identity.id]
+  }
+
   registry {
     server = azurerm_container_registry.base_acr.login_server
     identity = azurerm_user_assigned_identity.tfcagent_identity.id
