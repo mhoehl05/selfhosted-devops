@@ -1,3 +1,26 @@
+data "azuread_client_config" "current" {}
+
+resource "azuread_application" "tfcagent_app" {
+  display_name = "selfhost-tfc-agents"
+  owners       = [data.azuread_client_config.current.object_id]
+}
+
+resource "azuread_service_principal" "tfcagent_sp" {
+  client_id                    = azuread_application.tfcagent_app.client_id
+  app_role_assignment_required = false
+  owners                       = [data.azuread_client_config.current.object_id]
+}
+
+resource "azuread_service_principal_password" "tfcagent_sp_password" {
+  service_principal_id = azuread_service_principal.tfcagent_sp.id
+}
+
+resource "azurerm_role_assignment" "pull_access" {
+  scope              = azurerm_container_registry.base_acr.id
+  role_definition_id = "acrpull"
+  principal_id       = azurerm_azuread_service_principal_password.tfcagent_sp.service_principal_id
+}
+
 resource "azurerm_container_group" "agent" {
   count = var.agent_count
 
@@ -10,8 +33,8 @@ resource "azurerm_container_group" "agent" {
 
   image_registry_credential {
     server   = azurerm_container_registry.base_acr.login_server
-    username = azurerm_container_registry.base_acr.admin_username
-    password = azurerm_container_registry.base_acr.admin_password
+    username = azurerm_azuread_service_principal_password.tfcagent_sp.service_principal_id
+    password = azurerm_azuread_service_principal_password.tfcagent_sp.value
   }
 
   container {
