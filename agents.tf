@@ -30,6 +30,7 @@ resource "azurerm_container_app" "agents" {
   container_app_environment_id = azurerm_container_app_environment.tfcagent_env.id
   resource_group_name          = data.azurerm_resource_group.devops_rg.name
   revision_mode                = "Single"
+  infrastructure_subnet_id     = azurerm_subnet.TfcAgentSubnet.id
 
   identity {
     type         = "UserAssigned"
@@ -37,7 +38,7 @@ resource "azurerm_container_app" "agents" {
   }
 
   registry {
-    server = azurerm_container_registry.base_acr.login_server
+    server   = azurerm_container_registry.base_acr.login_server
     identity = azurerm_user_assigned_identity.tfcagent_identity.id
   }
 
@@ -49,12 +50,12 @@ resource "azurerm_container_app" "agents" {
       memory = "2.0Gi"
 
       env {
-        name = "TFC_AGENT_TOKEN"
+        name  = "TFC_AGENT_TOKEN"
         value = var.TFC_AGENT_TOKEN
       }
 
       env {
-        name = "TFC_AGENT_NAME"
+        name  = "TFC_AGENT_NAME"
         value = var.TFC_AGENT_NAME
       }
     }
