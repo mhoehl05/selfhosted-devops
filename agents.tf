@@ -9,14 +9,15 @@ resource "azurerm_container_group" "agent" {
   subnet_ids          = ["${azurerm_subnet.tfc_agents.id}"]
 
   image_registry_credential {
-        server   = azurerm_container_registry.base_acr.login_server
-        username = azurerm_container_registry.base_acr.admin_username
-        password = azurerm_container_registry.base_acr.admin_password
-    }
+    server   = azurerm_container_registry.base_acr.login_server
+    username = azurerm_container_registry.base_acr.admin_username
+    password = azurerm_container_registry.base_acr.admin_password
+  }
 
   container {
-    name   = "tfcagent"
-    image  = "${azurerm_container_registry.base_acr.login_server}/hashicorp/tfc-agent:latest"
+    name = "tfcagent"
+    #image  = "${azurerm_container_registry.base_acr.login_server}/hashicorp/tfc-agent:latest"
+    image  = "docker.io/hashicorp/tfc-agent:latest"
     cpu    = "0.5"
     memory = "1.5"
 

@@ -32,9 +32,9 @@ resource "azurerm_container_registry_task" "pull_tfcagent" {
         push:
         - "{{.Run.Registry}}/hashicorp/tfc-agent:latest"
     EOF
-    context_path   = "/dev/null"
+    context_path = "/dev/null"
     values = {
-        "REGISTRY_FROM_URL" = "${var.public_registry}"
+      "REGISTRY_FROM_URL" = "${var.public_registry}"
     }
   }
 }

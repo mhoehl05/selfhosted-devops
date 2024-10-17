@@ -34,8 +34,8 @@ variable "agent_count" {
 }
 
 variable "public_registry" {
-  type        = string
-  default     = "docker.io"
+  type    = string
+  default = "docker.io"
 }
 
 
