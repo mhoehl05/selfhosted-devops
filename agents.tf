@@ -40,8 +40,8 @@ resource "azurerm_container_app" "agents" {
     container {
       name   = "tfcagent"
       image  = "${azurerm_container_registry.base_acr.login_server}/hashicorp/tfc-agent:latest"
-      cpu    = 0.5
-      memory = "1.5Gi"
+      cpu    = 1.0
+      memory = "2.0Gi"
 
       env {
         name = "TFC_AGENT_TOKEN"
