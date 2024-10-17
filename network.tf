@@ -5,8 +5,8 @@ resource "azurerm_virtual_network" "devops_vnet" {
   resource_group_name = data.azurerm_resource_group.devops_rg.name
 }
 
-resource "azurerm_subnet" "agents" {
-  name                 = "DevopsAgentSubnet"
+resource "azurerm_subnet" "tfc_agents" {
+  name                 = "TfcAgentSubnet"
   resource_group_name  = data.azurerm_resource_group.devops_rg.name
   virtual_network_name = azurerm_virtual_network.devops_vnet.name
   address_prefixes     = ["10.1.0.0/27"]
@@ -22,11 +22,18 @@ resource "azurerm_subnet" "agents" {
   }
 }
 
+resource "azurerm_subnet" "acr_agents" {
+  name                 = "AcrAgentSubnet"
+  resource_group_name  = data.azurerm_resource_group.devops_rg.name
+  virtual_network_name = azurerm_virtual_network.devops_vnet.name
+  address_prefixes     = ["10.1.0.32/27"]
+}
+
 resource "azurerm_subnet" "system" {
   name                 = "SystemSubnet"
   resource_group_name  = data.azurerm_resource_group.devops_rg.name
   virtual_network_name = azurerm_virtual_network.devops_vnet.name
-  address_prefixes     = ["10.1.0.32/27"]
+  address_prefixes     = ["10.1.0.64/27"]
 }
 
 resource "azurerm_storage_account_network_rules" "default" {

@@ -6,7 +6,7 @@ resource "azurerm_container_group" "agent" {
   resource_group_name = data.azurerm_resource_group.devops_rg.name
   ip_address_type     = "Private"
   os_type             = "Linux"
-  subnet_ids          = ["${azurerm_subnet.agents.id}"]
+  subnet_ids          = ["${azurerm_subnet.tfc_agents.id}"]
 
   container {
     name   = "tfcagent"

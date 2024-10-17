@@ -29,8 +29,8 @@ variable "TFC_AGENT_NAME" {
 }
 
 variable "agent_count" {
-  type        = number
-  default     = 1
+  type    = number
+  default = 1
 }
 
 
