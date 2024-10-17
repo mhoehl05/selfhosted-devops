@@ -18,7 +18,7 @@ resource "azuread_service_principal_password" "tfcagent_sp_password" {
 resource "azurerm_role_assignment" "pull_access" {
   scope              = azurerm_container_registry.base_acr.id
   role_definition_id = "acrpull"
-  principal_id       = azurerm_azuread_service_principal_password.tfcagent_sp.service_principal_id
+  principal_id       = azurerm_azuread_service_principal_password.tfcagent_sp_password.service_principal_id
 }
 
 resource "azurerm_container_group" "agent" {
@@ -33,8 +33,8 @@ resource "azurerm_container_group" "agent" {
 
   image_registry_credential {
     server   = azurerm_container_registry.base_acr.login_server
-    username = azurerm_azuread_service_principal_password.tfcagent_sp.service_principal_id
-    password = azurerm_azuread_service_principal_password.tfcagent_sp.value
+    username = azurerm_azuread_service_principal_password.tfcagent_sp_password.service_principal_id
+    password = azurerm_azuread_service_principal_password.tfcagent_sp_password.value
   }
 
   container {
