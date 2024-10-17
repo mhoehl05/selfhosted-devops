@@ -17,8 +17,21 @@ resource "azurerm_container_registry_task" "pull_tfcagent" {
     os = "Linux"
   }
 
-  file_step {
-    task_file_path = "${path.module}/tasks/acragents/task.yaml"
+  encoded_step {
+    task_content = <<EOF
+    version: v1.1.0
+    steps:
+    - id: pull-tfcagent-image
+        cmd: >
+            docker pull {{.Values.REGISTRY_FROM_URL}}/hashicorp/tfc-agent:latest
+    - id: retag-tfcagent-image
+        when: ['pull-tfcagent-image']
+        cmd: docker tag {{.Values.REGISTRY_FROM_URL}}/hashicorp/tfc-agent:latest {{.Run.Registry}}/hashicorp/tfc-agent:latest
+    - id: push-tfcagent-image
+        when: ['retag-tfcagent-image']
+        push:
+        - "{{.Run.Registry}}/hashicorp/tfc-agent:latest"
+    EOF
     context_path   = "/dev/null"
     values = {
       "REGISTRY_FROM_URL" = "docker.io"
