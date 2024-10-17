@@ -40,6 +40,6 @@ resource "azurerm_storage_account_network_rules" "default" {
   storage_account_id = data.azurerm_storage_account.state_deposit.id
 
   default_action             = "Deny"
-  virtual_network_subnet_ids = [azurerm_subnet.agents.id]
+  virtual_network_subnet_ids = [azurerm_subnet.tfc_agents.id]
   bypass                     = ["AzureServices"]
 }

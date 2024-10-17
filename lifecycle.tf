@@ -1,5 +1,5 @@
 resource "azurerm_container_registry_agent_pool" "acr_agents" {
-  name                      = "acragentpool-imagelifecycle-demo-weu"
+  name                      = "acr-agentpool-demo-weu"
   resource_group_name       = data.azurerm_resource_group.devops_rg.name
   location                  = data.azurerm_resource_group.devops_rg.location
   container_registry_name   = azurerm_container_registry.base_acr.name
@@ -12,7 +12,7 @@ resource "azurerm_container_registry_task" "pull_tfcagent" {
   name                  = "pull-tfcagent-image"
   container_registry_id = azurerm_container_registry.base_acr.id
   agent_pool_name       = azurerm_container_registry_agent_pool.acr_agents.name
-  
+
   platform {
     os = "Linux"
   }
