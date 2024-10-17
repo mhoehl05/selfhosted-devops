@@ -18,7 +18,8 @@ resource "azurerm_container_registry_task" "pull_tfcagent" {
   }
 
   file_step {
-    task_file_path = "${path.module}/tasks/acragents.yaml"
+    task_file_path = "${path.module}/tasks/acragents/task.yaml"
+    context_path   = "${path.module}/tasks/acragents"
     values = {
       "REGISTRY_FROM_URL" = "docker.io"
     }
