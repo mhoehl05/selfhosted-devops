@@ -23,7 +23,7 @@ resource "azurerm_container_app_environment" "tfcagent_env" {
   location                   = data.azurerm_resource_group.devops_rg.location
   resource_group_name        = data.azurerm_resource_group.devops_rg.name
   log_analytics_workspace_id = azurerm_log_analytics_workspace.tfcagent_logs.id
-  infrastructure_subnet_id   = azurerm_subnet.TfcAgentSubnet.id
+  infrastructure_subnet_id   = azurerm_subnet.tfc_agents.id
 }
 
 resource "azurerm_container_app" "agents" {
