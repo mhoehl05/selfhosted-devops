@@ -8,9 +8,15 @@ resource "azurerm_container_group" "agent" {
   os_type             = "Linux"
   subnet_ids          = ["${azurerm_subnet.tfc_agents.id}"]
 
+  image_registry_credential {
+        server   = azurerm_container_registry.base_acr.login_server
+        username = azurerm_container_registry.base_acr.admin_username
+        password = azurerm_container_registry.base_acr.admin_password
+    }
+
   container {
     name   = "tfcagent"
-    image  = "docker.io/hashicorp/tfc-agent:latest"
+    image  = "${azurerm_container_registry.base_acr.login_server}/hashicorp/tfc-agent:latest"
     cpu    = "0.5"
     memory = "1.5"
 
@@ -24,4 +30,8 @@ resource "azurerm_container_group" "agent" {
       protocol = "TCP"
     }
   }
+
+  depends_on = [
+    azurerm_container_registry_task_schedule_run_now.pull_tfcagent
+  ]
 }
