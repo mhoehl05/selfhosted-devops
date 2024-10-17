@@ -33,8 +33,8 @@ resource "azurerm_container_group" "agent" {
 
   container {
     name = "tfcagent"
-    #image  = "${azurerm_container_registry.base_acr.login_server}/hashicorp/tfc-agent:latest"
-    image  = "docker.io/hashicorp/tfc-agent:latest"
+    image  = "${azurerm_container_registry.base_acr.login_server}/hashicorp/tfc-agent:latest"
+    #image  = "docker.io/hashicorp/tfc-agent:latest"
     cpu    = "0.5"
     memory = "1.5"
 
