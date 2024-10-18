@@ -49,9 +49,9 @@ resource "azurerm_container_app" "agents" {
       cpu    = 1.0
       memory = "2.0Gi"
 
-      secret {
+      env {
         name  = "TFC_AGENT_TOKEN"
-        value = var.TFC_AGENT_TOKEN
+        secret_name = "tfc-agent-token"
       }
 
       env {
@@ -59,6 +59,11 @@ resource "azurerm_container_app" "agents" {
         value = var.TFC_AGENT_NAME
       }
     }
+  }
+
+  secret {
+    name  = "tfc-agent-token"
+    value = var.TFC_AGENT_TOKEN
   }
 
   depends_on = [
