@@ -36,7 +36,6 @@ data "azurerm_network_interface" "acr_nic" {
 resource "azurerm_private_dns_zone" "acr_dns" {
   name                = "privatelink.azurecr.io"
   resource_group_name = data.azurerm_resource_group.devops_rg.name
-  location            = data.azurerm_resource_group.devops_rg.location
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "dns_vnet_link" {
