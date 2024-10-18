@@ -33,7 +33,7 @@ resource "azurerm_subnet" "system" {
   name                 = "SystemSubnet"
   resource_group_name  = data.azurerm_resource_group.devops_rg.name
   virtual_network_name = azurerm_virtual_network.devops_vnet.name
-  address_prefixes     = ["10.1.0.64/27"]
+  address_prefixes     = ["10.1.4.0/23"]
 }
 
 resource "azurerm_storage_account_network_rules" "default" {
