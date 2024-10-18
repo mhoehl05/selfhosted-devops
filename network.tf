@@ -11,6 +11,15 @@ resource "azurerm_subnet" "tfc_agents" {
   virtual_network_name = azurerm_virtual_network.devops_vnet.name
   address_prefixes     = ["10.1.0.0/27"]
   service_endpoints    = ["Microsoft.Storage"]
+
+  delegation {
+    name = "delegationtfcagentsdemoweu"
+
+    service_delegation {
+      name    = "Microsoft.ContainerInstance/containerGroups"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
+  }
 }
 
 resource "azurerm_subnet" "acr_agents" {
