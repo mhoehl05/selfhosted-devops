@@ -9,7 +9,7 @@ resource "azurerm_container_registry" "base_acr" {
     default_action = "Deny"
     ip_rule {
       action   = "Allow"
-      ip_range = data.azurerm_virtual_network.hub_vnet.address_space
+      ip_range = data.azurerm_virtual_network.hub_vnet.address_space[0]
     }
   }
 }
