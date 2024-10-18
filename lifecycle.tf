@@ -41,4 +41,8 @@ resource "azurerm_container_registry_task" "pull_tfcagent" {
 
 resource "azurerm_container_registry_task_schedule_run_now" "pull_tfcagent" {
   container_registry_task_id = azurerm_container_registry_task.pull_tfcagent.id
+  depends_on = [
+    azurerm_private_dns_a_record,
+    azurerm_private_dns_a_record_data
+  ]
 }
