@@ -7,10 +7,6 @@ resource "azurerm_container_registry" "base_acr" {
 
   network_rule_set {
     default_action = "Deny"
-    ip_rule {
-      action   = "Allow"
-      ip_range = data.azurerm_virtual_network.hub_vnet.address_space[0]
-    }
   }
 }
 
@@ -42,11 +38,18 @@ resource "azurerm_private_dns_zone" "acr_dns" {
   resource_group_name = data.azurerm_resource_group.devops_rg.name
 }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "dns_vnet_link" {
-  name                  = "dnslink-acr-demo-weu"
+resource "azurerm_private_dns_zone_virtual_network_link" "dns_devops_link" {
+  name                  = "dnslink-acrdevops-demo-weu"
   resource_group_name   = data.azurerm_resource_group.devops_rg.name
   private_dns_zone_name = azurerm_private_dns_zone.acr_dns.name
   virtual_network_id    = azurerm_virtual_network.devops_vnet.id
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "dns_hub_link" {
+  name                  = "dnslink-acrhub-demo-weu"
+  resource_group_name   = data.azurerm_resource_group.devops_rg.name
+  private_dns_zone_name = azurerm_private_dns_zone.acr_dns.name
+  virtual_network_id    = data.azurerm_virtual_network.hub_vnet.id
 }
 
 resource "azurerm_private_dns_a_record" "pep_dns_record_data" {
