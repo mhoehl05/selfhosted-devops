@@ -50,7 +50,7 @@ resource "azurerm_container_app" "agents" {
       memory = "2.0Gi"
 
       env {
-        name  = "TFC_AGENT_TOKEN"
+        name        = "TFC_AGENT_TOKEN"
         secret_name = "tfc-agent-token"
       }
 
