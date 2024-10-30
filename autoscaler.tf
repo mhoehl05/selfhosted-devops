@@ -41,7 +41,7 @@ resource "azurerm_linux_function_app" "autoscaler_function_app" {
 }
 
 resource "azurerm_app_service_source_control" "autoscaler_function_source" {
-  app_id   = azurerm_linux_web_app.autoscaler_function_app.id
+  app_id   = azurerm_linux_function_app.autoscaler_function_app.id
   repo_url = "https://github.com/mhoehl05/acr-agent-autoscaler"
   branch   = "main"
 }
