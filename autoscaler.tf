@@ -30,4 +30,8 @@ resource "azurerm_linux_function_app" "autoscaler_function_app" {
       python_version = "3.11"
     }
   }
+
+  depends_on = [
+    azurerm_container_registry_task_schedule_run_now.pull_tfcagent
+  ]
 }
