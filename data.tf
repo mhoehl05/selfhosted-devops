@@ -12,8 +12,8 @@ data "azurerm_virtual_network" "hub_vnet" {
   resource_group_name = "rg-hubnetwork-demo-weu"
 }
 
-data "archive_file" "acr_autoscaler_function" {  
-  type = "zip"  
-  source_dir = "./acr_autoscaler_function" 
+data "archive_file" "acr_autoscaler_function" {
+  type        = "zip"
+  source_dir  = "./acr_autoscaler_function"
   output_path = "acr_autoscaler_function.zip"
 }

@@ -6,16 +6,12 @@ resource "azurerm_storage_account" "autoscaler_stacc" {
   account_replication_type = "LRS"
 }
 
-resource "azurerm_app_service_plan" "autoscaler_service_plan" {
+resource "azurerm_service_plan" "autoscaler_service_plan" {
   name                = "appsp-acragent-autoscaler-demo-weu"
   location            = data.azurerm_resource_group.devops_rg.location
   resource_group_name = data.azurerm_resource_group.devops_rg.name
-  kind                = "FunctionApp"
-  reserved            = true
-  sku {
-    tier = "Dynamic"
-    size = "Y1"
-  }
+  os_type             = "Linux"
+  sku_name            = "Y1"
 }
 
 resource "azurerm_linux_function_app" "autoscaler_function_app" {
