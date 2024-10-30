@@ -23,7 +23,11 @@ resource "azurerm_linux_function_app" "autoscaler_function_app" {
   storage_account_name       = azurerm_storage_account.autoscaler_stacc.name
   storage_account_access_key = azurerm_storage_account.autoscaler_stacc.primary_access_key
 
-  zip_deploy_file = data.archive_file.acr_autoscaler_function.output_path
+  webdeploy_publish_basic_authentication_enabled = true
+
+  app_settings = {
+    "SCM_DO_BUILD_DURING_DEPLOYMENT" = "true"
+  }
 
   site_config {
     application_stack {
@@ -31,12 +35,17 @@ resource "azurerm_linux_function_app" "autoscaler_function_app" {
     }
   }
 
-  app_settings = {
-    "WEBSITE_RUN_FROM_PACKAGE" = "1"
-    "SCM_DO_BUILD_DURING_DEPLOYMENT" = "true"
+  github {
+
   }
 
   depends_on = [
     azurerm_container_registry_task_schedule_run_now.pull_tfcagent
   ]
+}
+
+resource "azurerm_app_service_source_control" "autoscaler_function_source" {
+  app_id   = azurerm_linux_web_app.autoscaler_function_app.id
+  repo_url = "https://github.com/mhoehl05/acr-agent-autoscaler"
+  branch   = "main"
 }
