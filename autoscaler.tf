@@ -31,9 +31,9 @@ resource "azurerm_linux_function_app" "autoscaler_function_app" {
     }
   }
 
-  app_setting = {
-    WEBSITE_RUN_FROM_PACKAGE = "1"
-    SCM_DO_BUILD_DURING_DEPLOYMENT = "true"
+  app_settings = {
+    "WEBSITE_RUN_FROM_PACKAGE" = "1"
+    "SCM_DO_BUILD_DURING_DEPLOYMENT" = "true"
   }
 
   depends_on = [
