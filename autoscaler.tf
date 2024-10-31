@@ -26,7 +26,7 @@ resource "azurerm_container_app_environment" "autoscaler_env" {
   infrastructure_subnet_id   = azurerm_subnet.system.id
 }
 
-resource "azurerm_container_app" "agents" {
+resource "azurerm_container_app" "acr_autoscaler" {
   name                         = "contapp-autoscaler-demo-weu"
   container_app_environment_id = azurerm_container_app_environment.autoscaler_env.id
   resource_group_name          = data.azurerm_resource_group.devops_rg.name
