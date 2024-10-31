@@ -45,3 +45,8 @@ resource "azurerm_app_service_source_control" "autoscaler_function_source" {
   repo_url = "https://github.com/mhoehl05/acr-agent-autoscaler"
   branch   = "main"
 }
+
+resource "azurerm_source_control_token" "autoscaler_repo_token" {
+  type         = "GitHub"
+  token        = var.github_token
+}

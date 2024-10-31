@@ -38,5 +38,9 @@ variable "public_registry" {
   default = "docker.io"
 }
 
+variable "github_token" {
+  type    = string
+  default = ""
+}
 
 
