@@ -46,8 +46,8 @@ resource "azurerm_container_app" "acr_autoscaler" {
     container {
       name   = "acr-agent-autoscaler"
       image  = "${azurerm_container_registry.base_acr.login_server}/acr-agent-autoscaler:latest"
-      cpu    = 0.1
-      memory = "0.25Gi"
+      cpu    = 0.25
+      memory = "0.5Gi"
 
       env {
         name  = "SUBSCRIPTION_ID"
