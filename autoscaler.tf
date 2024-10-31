@@ -84,11 +84,11 @@ resource "azurerm_container_app" "acr_autoscaler" {
         secret_name = "service-principal-password"
       }
     }
+  }
 
-    secret {
-      name  = "service-principal-password"
-      value = var.client_secret
-    }
+  secret {
+    name  = "service-principal-password"
+    value = var.client_secret
   }
 
   depends_on = [
