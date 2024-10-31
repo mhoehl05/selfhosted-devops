@@ -68,6 +68,26 @@ resource "azurerm_container_app" "acr_autoscaler" {
         name  = "AGENT_POOL"
         value = azurerm_container_registry_agent_pool.acr_agents.name
       }
+
+      env {
+        name  = "AZURE_TENANT_ID"
+        value = var.tenant_id
+      }
+
+      env {
+        name  = "AZURE_CLIENT_ID"
+        value = var.client_id
+      }
+
+      env {
+        name        = "AZURE_CLIENT_SECRET"
+        secret_name = "service-principal-password"
+      }
+    }
+
+    secret {
+      name  = "service-principal-password"
+      value = var.client_secret
     }
   }
 
