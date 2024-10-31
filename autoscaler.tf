@@ -49,6 +49,26 @@ resource "azurerm_container_app" "acr_autoscaler" {
       cpu    = 0.25
       memory = "0.5Gi"
     }
+
+    env {
+      name  = "SUBSCRIPTION_ID"
+      value = var.subscription_id
+    }
+
+    env {
+      name  = "GROUP_NAME"
+      value = data.azurerm_resource_group.devops_rg.name
+    }
+
+    env {
+      name  = "REGISTRIES"
+      value = azurerm_container_registry.base_acr.name
+    }
+
+    env {
+      name  = "AGENT_POOL"
+      value = azurerm_container_registry_agent_pool.acr_agents.name
+    }
   }
 
   depends_on = [
