@@ -60,6 +60,7 @@ resource "azurerm_container_registry_task" "build_autoscaler" {
     dockerfile_path      = "Dockerfile"
     context_path         = "https://github.com/mhoehl05/acr-agent-autoscaler#main"
     context_access_token = var.github_token
+    image_names          = ["acr-agent-autoscaler:latest"]
   }
 }
 
