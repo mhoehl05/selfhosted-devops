@@ -1,52 +1,58 @@
-resource "azurerm_storage_account" "autoscaler_stacc" {
-  name                     = "staccacragentautoscaler"
-  location                 = data.azurerm_resource_group.devops_rg.location
-  resource_group_name      = data.azurerm_resource_group.devops_rg.name
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
+resource "azurerm_user_assigned_identity" "autoscaler_identity" {
+  location            = data.azurerm_resource_group.devops_rg.location
+  name                = "idcontapp-system-demo-weu"
+  resource_group_name = data.azurerm_resource_group.devops_rg.name
 }
 
-resource "azurerm_service_plan" "autoscaler_service_plan" {
-  name                = "appsp-acragent-autoscaler-demo-weu"
-  location            = data.azurerm_resource_group.devops_rg.location
-  resource_group_name = data.azurerm_resource_group.devops_rg.name
-  os_type             = "Linux"
-  sku_name            = "Y1"
+resource "azurerm_role_assignment" "autoscaler_image_pull" {
+  scope                = azurerm_container_registry.base_acr.id
+  role_definition_name = "AcrPull"
+  principal_id         = azurerm_user_assigned_identity.autoscaler_identity.principal_id
 }
 
-resource "azurerm_linux_function_app" "autoscaler_function_app" {
-  name                = "funcapp-acragent-autoscaler-demo-weu"
+resource "azurerm_log_analytics_workspace" "autoscaler_logs" {
+  name                = "autoscaler-01"
   location            = data.azurerm_resource_group.devops_rg.location
   resource_group_name = data.azurerm_resource_group.devops_rg.name
-  service_plan_id     = azurerm_service_plan.autoscaler_service_plan.id
+  sku                 = "PerGB2018"
+  retention_in_days   = 30
+}
 
-  storage_account_name       = azurerm_storage_account.autoscaler_stacc.name
-  storage_account_access_key = azurerm_storage_account.autoscaler_stacc.primary_access_key
+resource "azurerm_container_app_environment" "autoscaler_env" {
+  name                       = "contenv-autoscaler-demo-weu"
+  location                   = data.azurerm_resource_group.devops_rg.location
+  resource_group_name        = data.azurerm_resource_group.devops_rg.name
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.autoscaler_logs.id
+  infrastructure_subnet_id   = azurerm_subnet.system.id
+}
 
-  webdeploy_publish_basic_authentication_enabled = true
+resource "azurerm_container_app" "agents" {
+  name                         = "contapp-autoscaler-demo-weu"
+  container_app_environment_id = azurerm_container_app_environment.autoscaler_env.id
+  resource_group_name          = data.azurerm_resource_group.devops_rg.name
+  revision_mode                = "Single"
 
-  app_settings = {
-    "SCM_DO_BUILD_DURING_DEPLOYMENT" = "true"
+  identity {
+    type         = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.autoscaler_identity.id]
   }
 
-  site_config {
-    application_stack {
-      python_version = "3.11"
+  registry {
+    server   = azurerm_container_registry.base_acr.login_server
+    identity = azurerm_user_assigned_identity.autoscaler_identity.id
+  }
+
+  template {
+    container {
+      name   = "acr-agent-autoscaler"
+      image  = "${azurerm_container_registry.base_acr.login_server}/acr-agent-autoscaler:latest"
+      cpu    = 0.25
+      memory = "0.5Gi"
     }
   }
 
   depends_on = [
-    azurerm_container_registry_task_schedule_run_now.pull_tfcagent
+    azurerm_container_registry_task_schedule_run_now.build_autoscaler,
+    azurerm_role_assignment.autoscaler_image_pull
   ]
-}
-
-resource "azurerm_app_service_source_control" "autoscaler_function_source" {
-  app_id   = azurerm_linux_function_app.autoscaler_function_app.id
-  repo_url = "https://github.com/mhoehl05/acr-agent-autoscaler"
-  branch   = "main"
-}
-
-resource "azurerm_source_control_token" "autoscaler_repo_token" {
-  type         = "GitHub"
-  token        = var.github_token
 }

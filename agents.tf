@@ -4,7 +4,7 @@ resource "azurerm_user_assigned_identity" "tfcagent_identity" {
   resource_group_name = data.azurerm_resource_group.devops_rg.name
 }
 
-resource "azurerm_role_assignment" "image_pull" {
+resource "azurerm_role_assignment" "tfcagent_image_pull" {
   scope                = azurerm_container_registry.base_acr.id
   role_definition_name = "AcrPull"
   principal_id         = azurerm_user_assigned_identity.tfcagent_identity.principal_id
@@ -68,6 +68,6 @@ resource "azurerm_container_app" "agents" {
 
   depends_on = [
     azurerm_container_registry_task_schedule_run_now.pull_tfcagent,
-    azurerm_role_assignment.image_pull
+    azurerm_role_assignment.tfcagent_image_pull
   ]
 }

@@ -46,3 +46,27 @@ resource "azurerm_container_registry_task_schedule_run_now" "pull_tfcagent" {
     azurerm_private_dns_a_record.pep_dns_record_data
   ]
 }
+
+resource "azurerm_container_registry_task" "build_autoscaler" {
+  name                  = "build-autoscaler-image"
+  container_registry_id = azurerm_container_registry.base_acr.id
+  agent_pool_name       = azurerm_container_registry_agent_pool.acr_agents.name
+
+  platform {
+    os = "Linux"
+  }
+
+  docker_step {
+    dockerfile_path      = "Dockerfile"
+    context_path         = "https://github.com/mhoehl05/acr-agent-autoscaler#main"
+    context_access_token = var.github_token
+  }
+}
+
+resource "azurerm_container_registry_task_schedule_run_now" "build_autoscaler" {
+  container_registry_task_id = azurerm_container_registry_task.build_autoscaler.id
+  depends_on = [
+    azurerm_private_dns_a_record.pep_dns_record,
+    azurerm_private_dns_a_record.pep_dns_record_data
+  ]
+}
